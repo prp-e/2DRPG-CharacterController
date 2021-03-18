@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Entity {
+public class PlayerControllerRigidbody : Rigidbody2DEntity {
 
     Animator anim;
 
@@ -10,6 +10,7 @@ public class PlayerController : Entity {
     PlayerControls controls;
 
     // Movement
+    Rigidbody2D playerRigidbody;
     Vector3 globalDir;
 
     // Status
@@ -26,7 +27,10 @@ public class PlayerController : Entity {
     // Use this for initialization
     void Start ()
 	{
-        anim = GetComponent<Animator>(); 
+        anim = GetComponent<Animator>();
+
+        playerRigidbody = GetComponent<Rigidbody2D>();
+        playerRigidbody.drag = drag;
 	}
 
     void Update()
@@ -44,7 +48,7 @@ public class PlayerController : Entity {
     // Move sprite in given direction
 	void Move(Vector3 dir)
     {
-		transform.position += dir * speed * Time.deltaTime;
+		playerRigidbody.velocity = dir * speed;
 
 		anim.SetFloat("MoveX", dir.x);
 		anim.SetFloat("MoveY", dir.y);
